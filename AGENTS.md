@@ -22,3 +22,15 @@
 - Keep unsafe code forbidden unless an ADR documents a reviewed need.
 - Add focused tests alongside behavior as implementation proceeds; run the relevant checks before closing a phase.
 
+## Version control (Git)
+
+The repository uses Git. The main branch is `master`.
+
+Before making commits, run the quality gates:
+- `cargo fmt --all -- --check`
+- `cargo clippy --workspace --all-targets --all-features -- -D warnings`
+- `cargo test --workspace`
+
+See [`docs/git.md`](docs/git.md) for Git commands, commit message conventions, and the pre-commit checklist.
+
+
