@@ -1,24 +1,141 @@
-This is free and unencumbered software released into the public domain.
+# Zengy Source-Available License 1.0 (ZSAL-1.0)
 
-Anyone is free to copy, modify, publish, use, compile, sell, or
-distribute this software, either in source code form or as a compiled
-binary, for any purpose, commercial or non-commercial, and by any
-means.
+Copyright (c) 2026 [COPYRIGHT HOLDER]
 
-In jurisdictions that recognize copyright laws, the author or authors
-of this software dedicate any and all copyright interest in the
-software to the public domain. We make this dedication for the benefit
-of the public at large and to the detriment of our heirs and
-successors. We intend this dedication to be an overt act of
-relinquishment in perpetuity of all present and future rights to this
-software under copyright law.
+All rights reserved, subject to the permissions expressly granted below.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+## 1. Definitions
 
-For more information, please refer to <https://unlicense.org>
+**"Software"** means the source code, documentation, configuration files, and other materials distributed by the copyright holder under this License.
+
+**"Copyright Holder"** means the individual or legal entity identified in the copyright notice.
+
+**"You"** means any individual or legal entity exercising rights granted by this License.
+
+**"Derivative Work"** means any work based upon, modified from, or incorporating a substantial portion of the Software.
+
+**"Non-Commercial Use"** means use for personal, educational, research, hobby, or other purposes that are not primarily intended for commercial advantage or monetary compensation.
+
+**"Commercial Use"** means any use primarily intended for or directed toward commercial advantage or monetary compensation, including but not limited to:
+
+- Selling the Software or any Derivative Work.
+- Charging fees for access to or distribution of the Software.
+- Incorporating the Software into a commercial product or service.
+- Using the Software to provide paid services.
+- Distributing the Software as part of a product or service offered for payment.
+- Using the Software to generate revenue through a business activity.
+
+**"Distribution"** means making the Software or a Derivative Work available to another person, whether through downloads, repositories, package registries, websites, or other means.
+
+## 2. Grant of Non-Commercial Rights
+
+Subject to the terms and conditions of this License, the Copyright Holder grants You a worldwide, non-exclusive, non-transferable, royalty-free license to:
+
+- View and inspect the Software.
+- Download and reproduce the Software.
+- Use the Software for Non-Commercial purposes.
+- Modify the Software and create Derivative Works.
+- Publish and distribute unmodified copies of the Software free of charge.
+- Publish and distribute modified versions and Derivative Works free of charge.
+- Create and maintain public or private forks for Non-Commercial purposes.
+
+These permissions are granted only for Non-Commercial Use.
+
+## 3. Commercial Use Requires Permission
+
+Any Commercial Use of the Software or a Derivative Work requires prior written permission from the Copyright Holder.
+
+Without such permission, You may not:
+
+- Sell the Software or any Derivative Work.
+- Offer paid access to the Software or any Derivative Work.
+- Include the Software in a commercial product or service.
+- Use the Software as part of a paid service or business activity.
+- Monetize a distribution of the Software or a Derivative Work.
+- Grant commercial usage rights to third parties.
+
+The Copyright Holder may grant separate commercial licenses under individually agreed terms.
+
+## 4. Redistribution Requirements
+
+You may redistribute the Software or Derivative Works free of charge, provided that:
+
+1. A copy of this License is included with every redistribution.
+2. Existing copyright notices and attribution are preserved.
+3. You clearly identify modifications made to the Software.
+4. You do not misrepresent the original authorship of the Software.
+5. You make the complete corresponding source code of your modifications available to recipients of distributed Derivative Works.
+6. Derivative Works are distributed under this License, without removing or weakening its restrictions.
+7. You do not impose additional restrictions that prevent recipients from exercising the rights granted by this License.
+
+You may publish forks on public source-code hosting platforms, including GitHub, provided that all conditions above are met.
+
+## 5. Attribution and Modification Notices
+
+You must preserve all existing copyright notices, author attributions, and references to this License.
+
+When modifying source files, You must make a reasonable effort to identify the changes and the date of modification.
+
+You may identify yourself as the author of Your own modifications, but You may not claim authorship of the original Software.
+
+Nothing in this License transfers ownership of the original Software to You.
+
+## 6. Contributions
+
+Unless otherwise agreed in writing, contributions submitted to the original project remain the intellectual property of their respective authors.
+
+By submitting a contribution, You grant the Copyright Holder a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, and distribute that contribution as part of the Software under this License.
+
+This provision does not grant the Copyright Holder ownership of Your contribution or automatically authorize separate Commercial Use of Your contribution.
+
+## 7. Third-Party Components
+
+This License applies only to materials owned by the Copyright Holder and explicitly distributed under this License.
+
+Third-party libraries, dependencies, assets, and other materials remain subject to their respective licenses.
+
+Nothing in this License overrides or restricts rights granted by applicable third-party licenses.
+
+## 8. Restrictions
+
+You may not:
+
+- Remove or alter copyright notices or this License.
+- Present the original Software as entirely Your own work.
+- Distribute the Software or Derivative Works for Commercial Use without written permission.
+- Circumvent the restrictions of this License by renaming, repackaging, or otherwise disguising a commercial distribution.
+- Grant rights that exceed the permissions granted to You under this License.
+
+## 9. Termination
+
+The rights granted under this License terminate automatically if You materially violate its terms.
+
+Upon termination, You must cease the activities that are not authorized by this License.
+
+If the violation is corrected, the Copyright Holder may reinstate Your rights by written notice.
+
+Termination does not automatically revoke valid permissions previously granted to recipients who are not in violation of this License.
+
+## 10. No Warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+
+IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE SOFTWARE OR ITS USE, DISTRIBUTION, OR OTHER DEALINGS.
+
+## 11. Reservation of Rights
+
+All rights not expressly granted by this License are reserved by the Copyright Holder.
+
+No permission for Commercial Use shall be implied from the publication, availability, or distribution of the Software.
+
+## 12. Governing Law
+
+The governing law and jurisdiction applicable to this License shall be determined by the Copyright Holder and applicable law.
+
+Nothing in this License excludes or limits rights that cannot legally be excluded or limited under applicable law.
+
+---
+
+**License:** Zengy Source-Available License 1.0  
+**Identifier:** ZSAL-1.0  
+**Copyright Holder:** [COPYRIGHT HOLDER]
