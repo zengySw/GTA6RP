@@ -1,0 +1,17 @@
+[package]
+name = "gta6rp-local-store"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+gta6rp-application = { path = "../application" }
+gta6rp-domain = { path = "../domain" }
+sqlx = { version = "0.9.1", default-features = false, features = ["macros", "migrate", "runtime-tokio", "sqlite"] }
+
+[dev-dependencies]
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+
+[lints]
+workspace = true

@@ -1,0 +1,24 @@
+[package]
+name = "gta6rp-api"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+argon2 = { version = "0.6.0", features = ["getrandom"] }
+axum = { version = "0.8.9", features = ["json"] }
+chrono = { version = "0.4", features = ["serde"] }
+serde = { version = "1.0", features = ["derive"] }
+sha2 = "0.11.1"
+tokio = { version = "1.0", features = ["macros", "net", "rt-multi-thread", "signal", "time"] }
+tower = { version = "0.5", features = ["util"] }
+tower_governor = { version = "0.8.0", features = ["axum", "tracing"] }
+tower-http = { version = "0.7.1", features = ["cors", "request-id", "trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1.0", features = ["v4"] }
+sqlx = { version = "0.9.1", default-features = false, features = ["chrono", "macros", "migrate", "postgres", "runtime-tokio", "tls-rustls-ring-webpki", "uuid"] }
+
+[lints]
+workspace = true

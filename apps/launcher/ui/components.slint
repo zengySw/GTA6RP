@@ -1,0 +1,274 @@
+import { Theme } from "theme/tokens.slint";
+
+export component InfoCard inherits Rectangle {
+    in property <string> heading;
+    in property <string> detail;
+    in property <string> badge;
+
+    min-height: 125px;
+    border-radius: Theme.radius-card;
+    background: Theme.surface;
+    border-width: 1px;
+    border-color: Theme.border;
+
+    VerticalLayout {
+        padding: 17px;
+        spacing: Theme.gap-small;
+        Text {
+            text: heading;
+            color: #f5f3ee;
+            font-size: Theme.type-title;
+            font-weight: 700;
+            wrap: word-wrap;
+        }
+        Text {
+            text: detail;
+            color: #a9afb5;
+            font-size: Theme.type-body;
+            wrap: word-wrap;
+        }
+        Rectangle { }
+        Text {
+            text: badge;
+            color: #f2b84b;
+            font-size: Theme.type-micro;
+            letter-spacing: 1px;
+            wrap: word-wrap;
+        }
+    }
+}
+
+export component TextField inherits VerticalLayout {
+    in property <string> label;
+    in property <string> placeholder;
+    in property <bool> enabled: true;
+    in property <bool> secret: false;
+    in-out property <string> text: "";
+
+    spacing: 6px;
+
+    Text {
+        text: label;
+        color: Theme.text-secondary;
+        font-size: Theme.type-caption;
+    }
+
+    Rectangle {
+        height: 44px;
+        border-radius: Theme.radius-control;
+        border-width: 1px;
+        border-color: editor.has-focus ? Theme.accent : Theme.border;
+        background: enabled ? #191c1f : #17191b;
+
+        editor := TextInput {
+            x: 12px;
+            y: 0px;
+            width: parent.width - 24px;
+            height: parent.height;
+            enabled: root.enabled;
+            text <=> root.text;
+            input-type: root.secret ? InputType.password : InputType.text;
+            font-size: Theme.type-body;
+            color: Theme.text-primary;
+            vertical-alignment: center;
+        }
+        if text == "": Text {
+            x: 12px;
+            y: 0px;
+            height: parent.height;
+            vertical-alignment: center;
+            text: root.placeholder;
+            color: #737a80;
+            font-size: Theme.type-body;
+        }
+    }
+}
+
+export component ActionButton inherits Rectangle {
+    in property <string> label;
+    in property <bool> emphasized: false;
+    in property <bool> enabled: true;
+    callback clicked();
+
+    min-width: 160px;
+    height: 44px;
+    border-radius: Theme.radius-control;
+    background: !enabled ? #202326 : touch.pressed ? #8f5d28 : touch.has-hover ? (emphasized ? #d08d3d : #343a3f) : (emphasized ? Theme.accent-strong : #25292d);
+    border-width: 1px;
+    border-color: focus-scope.has-focus ? Theme.accent : (emphasized ? #e1a147 : #3a4045);
+
+    Text {
+        text: label;
+        color: enabled ? #ffffff : #747a80;
+        font-size: Theme.type-body;
+        font-weight: 700;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+
+    focus-scope := FocusScope {
+        width: parent.width;
+        height: parent.height;
+
+        touch := TouchArea {
+            width: parent.width;
+            height: parent.height;
+            enabled: root.enabled;
+            clicked => { root.clicked(); }
+        }
+    }
+}
+
+export component NavItem inherits Rectangle {
+    in property <string> label;
+    in property <bool> selected: false;
+    callback activated();
+
+    height: 42px;
+    border-radius: Theme.radius-control;
+    background: selected ? #303337 : touch.pressed ? #202427 : touch.has-hover ? Theme.surface-hover : Theme.sidebar;
+
+    Text {
+        x: 14px;
+        y: 0px;
+        height: parent.height;
+        vertical-alignment: center;
+        text: label;
+        color: selected ? #ffffff : touch.has-hover ? #e3e5e7 : #a9afb5;
+        font-size: 14px;
+    }
+
+    Rectangle {
+        x: focus-scope.has-focus ? 1px : 0px;
+        y: focus-scope.has-focus ? 1px : 0px;
+        width: parent.width - (focus-scope.has-focus ? 2px : 0px);
+        height: parent.height - (focus-scope.has-focus ? 2px : 0px);
+        border-radius: 6px;
+        border-width: focus-scope.has-focus ? 1px : 0px;
+        border-color: Theme.accent;
+        background: #00000000;
+    }
+
+    focus-scope := FocusScope {
+        width: parent.width;
+        height: parent.height;
+        touch := TouchArea {
+            width: parent.width;
+            height: parent.height;
+            clicked => { root.activated(); }
+        }
+    }
+}
+
+export enum FeedbackKind { loading, empty, error }
+
+export component FeedbackPanel inherits Rectangle {
+    in property <FeedbackKind> kind: FeedbackKind.empty;
+    in property <string> title;
+    in property <string> detail;
+    in property <string> action-label: "";
+    callback action();
+    in-out property <int> animation-step: 0;
+
+    min-height: 136px;
+    border-radius: Theme.radius-card;
+    background: kind == FeedbackKind.error ? Theme.error-surface : Theme.surface;
+    border-width: 1px;
+    border-color: kind == FeedbackKind.error ? Theme.error-border : Theme.border;
+
+    animation-timer := Timer {
+        interval: 450ms;
+        running: root.kind == FeedbackKind.loading;
+        triggered => { root.animation-step = root.animation-step == 2 ? 0 : root.animation-step + 1; }
+    }
+
+    HorizontalLayout {
+        padding: 18px;
+        spacing: 14px;
+        Rectangle {
+            width: 34px;
+            height: 34px;
+            border-radius: 17px;
+            background: kind == FeedbackKind.error ? #743d2f : kind == FeedbackKind.loading ? #594827 : #343a3f;
+            Text {
+                text: kind == FeedbackKind.error ? "!" : kind == FeedbackKind.loading ? (animation-step == 0 ? "·" : animation-step == 1 ? "··" : "···") : "—";
+                color: kind == FeedbackKind.error ? #ffd4c7 : kind == FeedbackKind.loading ? #f2c875 : #c3c8cc;
+                font-size: 17px;
+                font-weight: 700;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+        VerticalLayout {
+            spacing: 6px;
+            Text {
+                text: title;
+                color: #f5f3ee;
+            font-size: Theme.type-title;
+                font-weight: 700;
+            }
+            Text {
+                text: detail;
+                color: #a9afb5;
+                font-size: Theme.type-body;
+                wrap: word-wrap;
+            }
+            if action-label != "": ActionButton {
+                label: action-label;
+                clicked => { root.action(); }
+            }
+        }
+    }
+}
+
+export component ModalDialog inherits Rectangle {
+    in property <string> title;
+    in property <string> detail;
+    in property <string> confirm-label: "Got it";
+    in property <length> overlay-width;
+    in property <length> overlay-height;
+    callback dismissed();
+
+    width: overlay-width;
+    height: overlay-height;
+    background: #a8000000;
+
+    Rectangle {
+        x: (parent.width - 440px) / 2;
+        y: (parent.height - 230px) / 2;
+        width: 440px;
+        height: 230px;
+        border-radius: 10px;
+        background: Theme.surface;
+        border-width: 1px;
+        border-color: Theme.border;
+
+        VerticalLayout {
+            padding: 22px;
+            spacing: 12px;
+            Text {
+                text: root.title;
+                color: Theme.text-primary;
+                font-size: Theme.type-title;
+                font-weight: 700;
+            }
+            Text {
+                text: root.detail;
+                color: Theme.text-secondary;
+                font-size: Theme.type-body;
+                wrap: word-wrap;
+            }
+            Rectangle { }
+            HorizontalLayout {
+                alignment: end;
+                ActionButton {
+                    label: root.confirm-label;
+                    emphasized: true;
+                    clicked => { root.dismissed(); }
+                }
+            }
+        }
+    }
+}
+
+

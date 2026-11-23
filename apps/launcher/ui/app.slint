@@ -1,0 +1,325 @@
+import { ActionButton, FeedbackKind, FeedbackPanel, InfoCard, ModalDialog, NavItem, TextField } from "components.slint";
+import { ScrollView } from "std-widgets.slint";
+import { Theme } from "theme/tokens.slint";
+
+export struct ServerCard {
+    name: string,
+    detail: string,
+    badge: string,
+}
+
+export struct NewsCard {
+    title: string,
+    summary: string,
+    date: string,
+}
+
+export component MainWindow inherits Window {
+    title: "GTA6RP Launcher";
+    preferred-width: 1280px;
+    preferred-height: 800px;
+    min-width: 960px;
+    min-height: 640px;
+    background: Theme.canvas;
+
+    in-out property <string> selected-page: "Home";
+    in-out property <string> notice: "Preview mode: all content is sample data.";
+    in-out property <bool> dialog-open: false;
+    in property <string> fixture-state-title: "Fixture not installed";
+    in property <string> fixture-state-detail: "The separate synthetic fixture has not been selected or installed.";
+    in property <string> fixture-state-badge: "NOT INSTALLED";
+    in property <string> fixture-action-label: "Simulate fixture install";
+    in property <string> fixture-state: "NotInstalled";
+    in property <[ServerCard]> servers;
+    in property <[NewsCard]> news;
+    in property <string> account-status: "Sign in or create an account.";
+    in property <bool> account-busy: false;
+    in property <bool> account-signed-in: false;
+    in-out property <bool> account-register-mode: false;
+    in-out property <string> account-email: "";
+    in-out property <string> account-password: "";
+
+    callback navigate(string);
+    callback primary-action();
+    callback simulate-error();
+    callback simulate-repair();
+    callback toggle-pause();
+    callback submit-auth(string, string, bool);
+    callback sign-out();
+    navigate(page) => {
+        selected-page = page;
+        notice = "Preview mode: " + page + " actions are not connected yet.";
+    }
+
+    HorizontalLayout {
+        spacing: 0px;
+
+        Rectangle {
+            width: 220px;
+            background: Theme.sidebar;
+            VerticalLayout {
+                padding-top: 28px;
+                padding-left: 18px;
+                padding-right: 18px;
+                spacing: 22px;
+                Text {
+                    text: "GTA6RP";
+                    color: #f2b84b;
+                    font-size: 25px;
+                    font-weight: 800;
+                }
+                Text {
+                    text: "TEST CLIENT  ·  UI PREVIEW";
+                    color: #8b9198;
+                    font-size: 10px;
+                    letter-spacing: 1px;
+                }
+                VerticalLayout {
+                    spacing: 6px;
+                    for page in ["Home", "Play", "Servers", "Downloads", "News", "Account", "Settings", "Diagnostics", "About"]: NavItem {
+                        label: page;
+                        selected: page == selected-page;
+                        activated => { navigate(page); }
+                    }
+                }
+                Rectangle { height: 1px; background: #303337; }
+                Text {
+                    text: "Fixture mode\nGTA VI is not supported";
+                    color: #8b9198;
+                    font-size: 11px;
+                }
+                Rectangle { }
+                Text {
+                    text: "BUILD 0.1.0 · UI PREVIEW";
+                    color: #676e75;
+                    font-size: 9px;
+                    letter-spacing: 1px;
+                }
+            }
+        }
+
+        VerticalLayout {
+            padding-top: 25px;
+            padding-left: 32px;
+            padding-right: 32px;
+            spacing: Theme.gap-section;
+
+            HorizontalLayout {
+                height: 42px;
+                Text {
+                    text: selected-page;
+                    color: #f5f3ee;
+                    font-size: Theme.type-heading;
+                    font-weight: 700;
+                    vertical-alignment: center;
+                }
+                Rectangle { }
+                Text {
+                    text: account-signed-in ? "ACCOUNT CONNECTED · FIXTURE PREVIEW" : "FIXTURE PREVIEW";
+                    color: #a9afb5;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                }
+            }
+
+            ScrollView {
+                vertical-stretch: 1;
+                horizontal-scrollbar-policy: always-off;
+
+                VerticalLayout {
+                    width: parent.width;
+                    spacing: Theme.gap-section;
+
+            if selected-page == "Home": VerticalLayout {
+                spacing: 15px;
+                Rectangle {
+                    height: 305px;
+                    border-radius: 10px;
+                    clip: true;
+                    background: #24272a;
+                    Image {
+                        source: @image-url("assets/cityscape.svg");
+                        width: parent.width;
+                        height: parent.height;
+                        image-fit: cover;
+                    }
+                    Rectangle {
+                        width: parent.width;
+                        height: parent.height;
+                        background: @linear-gradient(180deg, #00000000 20%, #08090be8 100%);
+                    }
+                    VerticalLayout {
+                        x: 28px;
+                        y: 0px;
+                        width: parent.width - 56px;
+                        height: parent.height;
+                        padding-bottom: 24px;
+                        alignment: end;
+                        spacing: 7px;
+                        Text {
+                            text: "LOS SANTOS, AFTER DARK";
+                            color: #f2b84b;
+                            font-size: 11px;
+                            letter-spacing: 2px;
+                        }
+                        Text {
+                            text: "Your next story\nstarts here.";
+                            color: #ffffff;
+                            font-size: Theme.type-display;
+                            font-weight: 800;
+                        }
+                        Text {
+                            text: "A native Rust launcher prototype, running on synthetic fixture data.";
+                            color: #d0d1d1;
+                            font-size: 13px;
+                        }
+                    }
+                }
+                HorizontalLayout {
+                    height: 138px;
+                    spacing: 12px;
+                    InfoCard { heading: "Play"; detail: fixture-state-detail; badge: fixture-state-badge; }
+                    InfoCard { heading: "Servers"; detail: "Browse the sample server catalog"; badge: "3 SAMPLE SERVERS"; }
+                    InfoCard { heading: "Downloads"; detail: "No active download tasks"; badge: "IDLE"; }
+                }
+            }
+
+            if selected-page == "Play": VerticalLayout {
+                spacing: 16px;
+                if fixture-state == "Detecting" || fixture-state == "Verifying" || fixture-state == "Downloading" || fixture-state == "Launching": FeedbackPanel {
+                    kind: FeedbackKind.loading;
+                    title: fixture-state-title;
+                    detail: fixture-state-detail;
+                }
+                if fixture-state == "Error": FeedbackPanel {
+                    kind: FeedbackKind.error;
+                    title: fixture-state-title;
+                    detail: fixture-state-detail;
+                }
+                if fixture-state != "Detecting" && fixture-state != "Verifying" && fixture-state != "Downloading" && fixture-state != "Launching" && fixture-state != "Error": InfoCard {
+                    height: 155px;
+                    heading: fixture-state-title;
+                    detail: fixture-state-detail;
+                    badge: fixture-state-badge;
+                }
+                HorizontalLayout {
+                    height: 46px;
+                    spacing: 10px;
+                    ActionButton { label: "Choose fixture folder"; clicked => { notice = "Folder selection will be added with the fixture provider."; } }
+                    ActionButton { label: fixture-action-label; emphasized: true; clicked => { root.primary-action(); } }
+                    ActionButton { label: "Show error state"; clicked => { root.simulate-error(); } }
+                }
+                HorizontalLayout {
+                    height: 42px;
+                    spacing: 10px;
+                    if fixture-state == "Downloading": ActionButton { label: "Pause preview"; clicked => { root.toggle-pause(); } }
+                    if fixture-state == "Paused": ActionButton { label: "Resume preview"; clicked => { root.toggle-pause(); } }
+                    ActionButton { label: "Show repair state"; clicked => { root.simulate-repair(); } }
+                }
+                InfoCard {
+                    height: 110px;
+                    heading: "Why fixture mode?";
+                    detail: "The launcher will only claim real game support after an official PC release and a validated lawful install and launch path.";
+                    badge: "SAFE PREVIEW";
+                }
+            }
+
+            if selected-page == "Servers": VerticalLayout {
+                spacing: 12px;
+                Text { text: "Sample catalog · statuses are illustrative"; color: #9ca2a8; font-size: 13px; }
+                for server in servers: InfoCard { heading: server.name; detail: server.detail; badge: server.badge; }
+            }
+
+            if selected-page == "Downloads": VerticalLayout {
+                spacing: 12px;
+                FeedbackPanel { kind: FeedbackKind.empty; title: "No downloads yet"; detail: "The queue is empty. Download tasks, progress, pause, and resume controls will appear here when the download engine is implemented."; }
+                InfoCard { heading: "Install location"; detail: "A folder can be selected after local installation state is implemented."; badge: "NOT CONFIGURED"; }
+            }
+
+            if selected-page == "News": VerticalLayout {
+                spacing: 12px;
+                for article in news: InfoCard { heading: article.title; detail: article.summary; badge: article.date; }
+            }
+
+            if selected-page == "Account": VerticalLayout {
+                spacing: 14px;
+                if account-signed-in: VerticalLayout {
+                    spacing: 12px;
+                    InfoCard { heading: "Signed in"; detail: account-status; badge: "CONNECTED"; }
+                    ActionButton { label: "Sign out"; enabled: !account-busy; clicked => { sign-out(); } }
+                }
+                if !account-signed-in: VerticalLayout {
+                    spacing: 12px;
+                    InfoCard { heading: account-register-mode ? "Create account" : "Sign in"; detail: account-status; badge: account-busy ? "WORKING" : "ACCOUNT"; }
+                    TextField { label: "Email"; placeholder: "name@example.com"; enabled: !account-busy; text <=> account-email; }
+                    TextField { label: "Password"; placeholder: "At least 12 characters to register"; enabled: !account-busy; secret: true; text <=> account-password; }
+                    HorizontalLayout {
+                        height: 46px;
+                        spacing: 10px;
+                        ActionButton {
+                            label: account-register-mode ? "Create account" : "Sign in";
+                            emphasized: true;
+                            enabled: !account-busy;
+                            clicked => { submit-auth(account-email, account-password, account-register-mode); }
+                        }
+                        ActionButton {
+                            label: account-register-mode ? "Back to sign in" : "Create account";
+                            enabled: !account-busy;
+                            clicked => { account-register-mode = !account-register-mode; }
+                        }
+                    }
+                }
+            }
+
+            if selected-page == "Settings": VerticalLayout {
+                spacing: 12px;
+                InfoCard { heading: "Appearance"; detail: "Theme  ·  Dark\nLanguage  ·  English"; badge: "PREVIEW"; }
+                InfoCard { heading: "Downloads"; detail: "Parallel downloads  ·  3\nSpeed limit  ·  Unlimited"; badge: "NOT SAVED"; }
+                InfoCard { heading: "Application"; detail: "Start with Windows  ·  Off\nClose behavior  ·  Exit"; badge: "NOT SAVED"; }
+            }
+
+            if selected-page == "Diagnostics": VerticalLayout {
+                spacing: 12px;
+                InfoCard { heading: "Diagnostic report"; detail: "A report can include app version, OS information, and recent redacted logs. No report is generated in this preview."; badge: "NOT EXPORTED"; }
+                ActionButton { label: "Export report"; clicked => { notice = "Diagnostic export is not implemented yet."; } }
+                InfoCard { heading: "Privacy"; detail: "Diagnostic output must exclude passwords, tokens, private keys, and personal file contents."; badge: "REDACTION REQUIRED"; }
+            }
+
+            if selected-page == "About": VerticalLayout {
+                spacing: 12px;
+                InfoCard { heading: "GTA6RP Launcher"; detail: "Version 0.1.0\nRust + Slint · Windows 10/11 x64 target"; badge: "UI PREVIEW"; }
+                InfoCard { heading: "Current limitations"; detail: "Mock data only. No account, backend, downloads, game integration, or launcher updates are connected."; badge: "NOT A GAME CLIENT"; }
+                InfoCard { heading: "Technology"; detail: "Native Slint UI with Rust application code. The UI framework remains subject to the Phase 0 technical and license review."; badge: "PROVISIONAL"; }
+                HorizontalLayout {
+                    height: 46px;
+                    spacing: 10px;
+                    ActionButton { label: "Show sample dialog"; clicked => { dialog-open = true; } }
+                    ActionButton { label: "Disabled control"; enabled: false; }
+                }
+            }
+
+                }
+            }
+
+            Rectangle { height: 1px; background: #303337; }
+            Text {
+                text: notice;
+                color: #858c93;
+                font-size: 10px;
+                overflow: elide;
+            }
+        }
+    }
+
+    if dialog-open: ModalDialog {
+        overlay-width: root.width;
+        overlay-height: root.height;
+        title: "Preview dialog";
+        detail: "This reusable dialog demonstrates confirmation styling. It does not save settings or contact a service.";
+        dismissed => {
+            dialog-open = false;
+            notice = "Preview dialog closed.";
+        }
+    }
+}
+

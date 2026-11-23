@@ -1,0 +1,27 @@
+[package]
+name = "gta6rp-launcher"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+build = "build.rs"
+
+[dependencies]
+gta6rp-application = { path = "../../crates/application" }
+gta6rp-domain = { path = "../../crates/domain" }
+gta6rp-installation = { path = "../../crates/installation" }
+gta6rp-local-store = { path = "../../crates/local-store" }
+reqwest = { version = "0.13.5", default-features = false, features = ["blocking", "json", "rustls"] }
+serde = { version = "1.0", features = ["derive"] }
+slint = "=1.19.0"
+tokio = { version = "1.0", features = ["rt", "rt-multi-thread", "time", "sync"] }
+
+[target.'cfg(windows)'.dependencies]
+keyring = "4.2.0"
+
+[build-dependencies]
+slint-build = "=1.19.0"
+
+[lints]
+workspace = true
+
