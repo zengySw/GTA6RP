@@ -1,0 +1,23 @@
+[package]
+name = "gta6rp-download-engine"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+gta6rp-domain = { path = "../domain" }
+gta6rp-installation = { path = "../installation" }
+gta6rp-local-store = { path = "../local-store" }
+reqwest = { version = "0.13.5", default-features = false, features = ["json", "rustls", "stream"] }
+serde = { version = "1.0", features = ["derive"] }
+hex = "0.4"
+futures-util = "0.3"
+sha2 = "0.11.1"
+tokio = { version = "1.0", features = ["rt", "rt-multi-thread", "time", "sync", "fs"] }
+
+[dev-dependencies]
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread", "time"] }
+
+[lints]
+workspace = true
